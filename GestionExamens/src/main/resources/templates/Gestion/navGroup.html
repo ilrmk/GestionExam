@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+<title>ENSAH</title>
+<link rel="stylesheet" href="/style.css">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+ <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+ <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="./bootstrap.min.css">
+ 
+</head>
+<body>
+  <div class = "container">
+
+       
+     
+ <div class="row bg-light">
+    <div class="col-4 p-2 d-flex card" id="gererGroup1" style="background:#FFFFFF;">
+        <a class="sidebar-link" id="gererGroupLink1" th:href="@{'/groupe/' + ${cretaire}}">
+            <i class="fa fa-refresh" aria-hidden="true"></i> Consulter les groupes
+        </a>
+    </div>
+    <div class="col-4 p-2 d-flex card" id="ajoGroup" style="background:#FFFFFF;">
+        <a class="sidebar-link" id="ajoGroupLink" th:href="@{'/ajouterGroup/' +${cretaire}}">
+            <i class="fa-solid fa-user-group"></i> Créer groupe
+        </a>
+    </div>
+    <div class="col-4 p-2 d-flex card" id="gererGroup2" style="background:#FFFFFF;">
+        <a class="sidebar-link" id="gererGroupLink2" th:href="@{'/manageGroup/' + ${cretaire}}">
+            <i class="fa fa-refresh" aria-hidden="true"></i> Gérer les groupes
+        </a>
+    </div>
+</div>
+
+    
+    
+    
+ 
+ </div>
+ 
+
+</body>
+</html>

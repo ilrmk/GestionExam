@@ -1,0 +1,54 @@
+.next{
+	
+	margin-top: 10%;
+	margin-left:5%;
+}
+
+.prev{
+	margin-right:5%;
+	margin-top:10%;
+}
+
+.liste{
+	border: 1px solid #ccc; /* Ajoute une bordure solide grise de 1 pixel */
+    padding: 10px; /* Ajoute un espace à l'intérieur du fieldset */
+    margin: 20px; /* Ajoute un espace en bas du fieldset */
+}
+ul {
+    list-style-type: disc; /* Type de puce (disque) */
+}
+
+
+.h2{
+	margin-buttom:20%;
+}
+
+
+.case {
+    display: flex;
+    flex-direction:column;
+    /* Pour aligner les éléments verticalement */
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.case2{
+	 border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.case input[type="radio"] {
+    margin-right: 10px; /* Ajout de cette propriété pour réduire l'espace */
+}
+
+ label {
+    margin: 0;
+    color:black;
+}
+
+
+
+.form-group{
+	
+	
+}

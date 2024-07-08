@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ENSAH</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div th:replace="./menu.html"></div>
+
+    <!-- Main -->
+    <div class="main">
+        <main class="content px-3 py-2">
+            <div th:replace="Gestion/navGestionAdmin.html"></div>
+            <h3 class="h2 mb-2 text-center">Liste des adminstrateurs</h3>
+            <div class="row ">
+             <form method="POST" th:action="@{/chercherEnseignant}" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+    <div class="input-group">
+        <input type="text" style="color:#1B4C6E; background: #FFFFFF;" class="form-control border small" placeholder="Recherche par mot clé" aria-label="Rechercher" aria-describedby="basic-addon2" name="matricule" /> 
+               <input type="hidden"   value="admin" name="type" /> 
+        
+        <div class="input-group-append">
+            <button style="background: #FFFFFF;" class="btn" type="submit">
+                <i class="fa-solid fa fa-search" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</form>
+
+            </div>
+        <div class="card-body  p-2 m-2">
+                            <table class="table ">
+                                <thead style="background:#4168FF;">
+                                    <tr>
+                                        <th class=" text-white"scope="col">PPR</th>
+                                        <th class=" text-white" scope="col">Nom</th>
+                                        <th class=" text-white" scope="col">Prénom</th>
+                                        <th class=" text-white" scope="col">Situation administrative </th>
+                                        <th class=" text-white" scope="col">Email</th>
+                                        <th class=" text-white" scope="col">Ancienneté dans l'administration</th>
+                                        <th class=" text-white" scope="col">Adress</th>
+                                        
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                 <tr th:each="enseignant : ${listeEnseignant}">
+        <td th:text="${enseignant.PPR}"></td>
+        <td th:text="${enseignant.nom}"></td>
+        <td th:text="${enseignant.prenom}"></td>
+        <td th:text="${enseignant.situationAdmin}"></td>
+        <td th:text="${enseignant.email}"></td>
+        <td th:text="${enseignant.ancAdministratif}"></td>
+        <td th:text="${enseignant.adresse}"></td>
+    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+        
+        </main>
+   
+    </div>
+
+    <div th:replace="./footer.html"></div>
+</body>
+</html>

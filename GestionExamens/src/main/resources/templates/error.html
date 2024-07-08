@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet" href="../ControleExamenCss/Examen.css">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:if="${messageErreur}" class="alert alert-danger" role="alert">
+				    <!-- Afficher le message d'erreur -->
+				    <p th:text="${messageErreur}"></p>
+				</div>
+</body>
+</html>

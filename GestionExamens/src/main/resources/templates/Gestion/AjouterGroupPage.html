@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ENSAH</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div th:replace="menu.html"></div>
+
+    <!-- Main -->
+    <div class="main">
+        <main class="content px-3 py-2">
+            <div th:replace="Gestion/navGestion.html"></div>
+            <div th:replace="Gestion/navGroup.html"></div>
+           
+            <h3 class="h2 mb-2 text-center">Créer un groupe</h3>
+            
+            <hr class="sidebar-divider my-0 p-2" style="color: #060707;">
+            <div class="container">
+           <div th:if="${messageErreur}" class="alert alert-danger p-2" role="alert">
+				    <!-- Afficher le message d'erreur -->
+				    <p th:text="${messageErreur}"></p>
+				</div>
+				
+				<div th:if="${message}" class="alert alert-success p-2" role="alert">
+    <!-- Afficher le message de succès -->
+    <p th:text="${message}"></p>
+</div>
+                <div class="row border border-secondary m-3 p-2">
+                    <form th:action="@{/addGroup}" th:object="${GroupModel}" method="post">
+                        <div class="row" id="infoGroup">
+                            <div class="col-6">
+                                <p class="text-danger" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></p>
+                                <label for="nom">Nom du groupe :</label><br>
+                                <input type="text" id="nom" th:field="*{nom}"><br><br>
+                                
+                                <input type="hidden" id="id" th:field="*{id}" />
+                               <input type="hidden" id="cretaire" th:field="*{cretaire}" />
+                                
+                                <p class="text-danger" th:if="${#fields.hasErrors('dateCreation')}" th:errors="*{dateCreation}"></p>
+                                <label for="dateCreation">Date de création :</label><br>
+                                <input type="date" id="dateCreation" th:field="*{dateCreation}" name="dateCreation"><br><br>
+                                 <p class="text-danger" th:if="${#fields.hasErrors('dateCreation')}" th:errors="*{dateCreation}"></p>
+                              
+                            </div>
+                            <div class="col-6">
+                               <p class="text-danger" th:if="${#fields.hasErrors('descrp_group')}" th:errors="*{descrp_group}"></p>
+                                
+                                <label for="descrp_group">Description :</label><br>
+                                <textarea id="descrp_group" th:field="*{descrp_group}" name="descrp_group" rows="4" cols="30"></textarea><br><br>
+                            
+                                <button type="button" class="btn btn-primary" onclick="suivante()">Suivant</button>
+                            </div>
+                        </div>
+                        
+                        <div class="row" id="enseigGroup" style="display:none;">
+                                <h6 class="h2 mb-2 text-center">Choisissez les membres du groupe :</h4>
+                        
+                            <table class="table">
+                                <thead style="background:#4168FF;">
+                                    <tr>
+                                        <th class="text-white" scope="col">PPR</th>
+                                        <th class="text-white" scope="col">Nom</th>
+                                        <th class="text-white" scope="col">Prénom</th>
+                                        <th class="text-white" scope="col">Grade</th>
+                                        <th class="text-white" scope="col">Département</th>
+                                        <th class="text-white" scope="col">Filière</th>
+                                        <th class="text-white" scope="col">Spécialité</th>
+                                        <th class="text-white" scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="enseignant : ${listeEnseignant}">
+                                        <td th:text="${enseignant.PPR}"></td>
+                                        <td th:text="${enseignant.nom}"></td>
+                                        <td th:text="${enseignant.prenom}"></td>
+                                        <td th:text="${enseignant.grade}"></td>
+                                        <td th:text="${enseignant.departement.name}"></td>        
+                                       <td th:text="${enseignant.filiere.name}"></td>
+                                       <td th:text="${enseignant.specialite}"></td>
+                                        
+                                        <td>
+                                            <input type="checkbox" name="selectedEnseignants" th:value="${enseignant.id}">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Valider</button>
+                                <button type="button" class="btn btn-secondary" onclick="retour()">Retour</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div th:replace="footer.html"></div>
+
+    <script>
+        function suivante() {
+            var divInfGroup = document.getElementById("infoGroup");
+            var divEnsGroup = document.getElementById("enseigGroup");
+            divInfGroup.style.display = "none";
+            divEnsGroup.style.display = "block";
+        }
+
+        function retour() {
+            var divInfGroup = document.getElementById("infoGroup");
+            var divEnsGroup = document.getElementById("enseigGroup");
+            divInfGroup.style.display = "block";
+            divEnsGroup.style.display = "none";
+        }
+
+        function annuler() {
+            // Sélectionnez tous les champs du formulaire
+            var champsFormulaire = document.querySelectorAll('input[type=text], input[type=radio], input[type=date], input[type=email], input[type=tel], textarea, select');
+
+            // Parcourez tous les champs et réinitialisez leur valeur à vide
+            champsFormulaire.forEach(function(champ) {
+                champ.value = '';
+            });
+
+            // Sélectionnez tous les éléments <p> dans le formulaire
+            var paragraphes = document.getElementsByTagName("p");
+            
+            // Parcourez tous les paragraphes et réinitialisez leur contenu à vide
+            for (var i = 0; i < paragraphes.length; i++) {
+                paragraphes[i].textContent = '';
+            }
+        }
+        var ele = document.getElementById("grou");
+
+        // Modifiez le style de fond en utilisant la propriété "style" et "backgroundColor"
+        ele.style.backgroundColor = "#50FF63";
+        var ele = document.getElementById("ajoGroup");
+
+        // Modifiez le style de fond en utilisant la propriété "style" et "backgroundColor"
+        ele.style.backgroundColor = "#FFC57B";
+    </script>
+</body>
+</html>

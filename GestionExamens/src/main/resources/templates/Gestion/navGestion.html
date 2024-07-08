@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+<title>ENSAH</title>
+<link rel="stylesheet" href="/style.css">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+ <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+ <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="./bootstrap.min.css">
+ 
+</head>
+<body>
+
+        <div class = "container">
+
+ <div class="row  bg-lighet">
+ 
+    <div class="col-4 p-2  card d-flex" id="ajo" style="background:#FFFFFF;" >
+    <a class="sidebar-link "  id="ajoa"href="/ajouterEns"> <i class="fa fa-user-plus" aria-hidden="true"></i>Ajouter enseignant</a>
+    </div>
+    
+    <div class="col-4 p-2  d-flex card" id="géré" style="background:#FFFFFF;">
+    <a  class="sidebar-link "  id="géréa"href="/gereEns" 
+                            >    <i class="fa fa-refresh" aria-hidden="true"></i>
+                            Gérer les enseignants</a>
+    
+     </div>
+    
+    
+    <div class="col-4 p-2  card d-flex" id="grou" style="background:#FFFFFF;">
+    
+                        <a href=""   id="groua" class="sidebar-link collapsed" data-bs-target="#group" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-people-group"></i> 
+                      Creer des groupes    </a>
+                      
+                        <ul id="group" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item t">
+                        <a href="/homeView" class="sidebar-link collapsed" data-bs-target="#dep" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa fa-building-o" aria-hidden="true"></i>
+                              Département                        </a>
+                        
+       <ul id="dep" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+    <li th:each="departement : ${listeDepartemet}" th:value="${departement.id}" class="sidebar-item t">
+        <a th:href="@{'/groupe/' + ${departement.name}}"  class="sidebar-link a " >
+            <i class="fa-solid fa-angles-right"></i>
+            <span th:text="${departement.name}"></span>
+         </a>
+         </li>
+         </ul>
+
+                    </li>
+                    
+                    
+                            
+                            <li class="sidebar-item t">
+                            <a href="/homeView" class="sidebar-link collapsed" data-bs-target="#fil" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-flag"></i>
+                              Méme filière                        </a>
+                            
+                            <ul id="fil" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+    <li th:each="filiere : ${listeFiliere}" th:value="${filiere.id_Filiere}" class="sidebar-item t">
+        <a th:href=" @{'/groupe/'+ ${filiere.name}}" class="sidebar-link">
+            <i class="fa-solid fa-angles-right"></i>
+            <span th:text="${filiere.name}"></span>
+         </a>
+         </li>
+         </ul>
+                            
+                            
+                            </li>
+                            
+                            
+                            
+                            
+                            
+                            <li class="sidebar-item t">
+                             <a th:href="@{/groupe/{Cretaire}(Cretaire='autre')}"class="sidebar-link"><i class="fa fa-plus" aria-hidden="true"></i>
+                                Autre</a>
+                            </li>
+                        </ul>
+                   
+    
+    
+    
+     
+       
+    </div>
+  
+ 
+ </div></div>
+ 
+
+</body>
+</html>

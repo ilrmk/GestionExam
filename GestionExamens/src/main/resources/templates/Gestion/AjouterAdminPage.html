@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ENSAH</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="./bootstrap.min.css">
+</head>
+<body>
+    <div th:replace="./menu.html"></div>
+
+    <!-- Main -->
+    <div class="main">
+        <main class="content px-3 py-2">
+            <div th:replace="Gestion/navGestionAdmin.html"></div>
+            <h3 class="h2 mb-2 text-center">Ajouter un administrateur</h3>
+            <hr class="sidebar-divider my-0 p-2" style="color: #060707;">
+        
+            <div class="container">
+           <div th:if="${messageErreur}" class="alert alert-danger p-2" role="alert">
+    <!-- Afficher le message d'erreur -->
+    <p th:text="${messageErreur}"></p>
+</div>
+<div th:if="${message}" class="alert alert-success p-2" role="alert">
+    <!-- Afficher le message de succès -->
+    <p th:text="${message}"></p>
+</div>
+
+
+                <div class="row border border-secondary m-3 p-2">
+                   <form action="#" th:action="@{/addPersonne}" th:object="${PersonneModel}" method="post">
+                    
+    <div class="row">
+        <div class="col-6">
+                          <p class="text-danger " th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></p>
+        
+                                <label for="nom">Nom :</label><br>
+                                <input type="text"id="nom" th:field="*{nom}"><br><br>
+<input type="hidden" id="id" th:field="*{id}" />
+                                                    <input type="hidden" id="typePerson" th:field="*{typePerson}" />
+                                
+                                  
+                                <p class="text-danger " th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></p>
+                                <label for="prenom">Prénom :</label><br>
+                                <input type="text" id="prenom" th:field="*{prenom}" name="prenom"/><br><br>
+                                
+                                <p class="text-danger " th:if="${#fields.hasErrors('sexe')}" th:errors="*{sexe}"></p>                              
+                                <label>Sexe :</label><br>
+                                <input class="form-check-input" type="radio" th:field="*{sexe}" th:id="homme" value="homme"/>
+                                <label class="form-check-label" for="homme">
+                                    Homme
+                                </label>
+
+                                <input class="form-check-input" type="radio" th:field="*{sexe}" th:id="femme" value="femme">
+                                <label class="form-check-label" for="femme">
+                                    Femme
+                                </label><br><br>
+                                <p class="text-danger " th:if="${#fields.hasErrors('PPR')}" th:errors="*{PPR}"></p>
+                                <label for="PPR">PPR :</label><br>
+                                <input type="text" id="PPR" th:field="*{PPR}" name="PPR"><br><br>
+                                
+                                <p class="text-danger " th:if="${#fields.hasErrors('CIN')}" th:errors="*{CIN}"></p>
+                                <label for="CIN">CIN :</label><br>
+                                <input type="text" id="CIN" th:field="*{CIN}" name="CIN"><br><br>
+                                
+
+                                <label for="date_naissance">Date de naissance :</label><br>
+                                <input type="date" id="date_naissance" th:field="*{dateNaissance}" name="dateNaissance"><br><br>
+
+                                <label for="dateNaissance">Lieu de naissance :</label><br>
+                                <input type="text" id="lieu_naissance" th:field="*{lieuNaissance}" name="lieuNaissance"><br><br>
+                            </div>
+
+                            <div class="col-6">
+                                   
+                               
+                               <p class="text-danger " th:if="${#fields.hasErrors('situationAdmin')}" th:errors="*{situationAdmin}"></p>
+                               <label for="situation_admin">Situation administrative :</label><br>
+                                <input type="text" id="situation_admin" th:field="*{situationAdmin}" name="situationAdmin"><br><br>
+                                <p class="text-danger " th:if="${#fields.hasErrors('ancAdministratif')}" th:errors="*{ancAdministratif}"></p> 
+                               <label for="anc_administratif">Ancienneté dans l'administration :</label><br>
+                                <input type="text" id="anc_administratif" th:field="*{ancAdministratif}" name="ancAdministratif"><br><br>
+                                               <p class="text-danger " th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                                <label for="email">Email :</label><br>
+                                <input type="email" id="email" th:field="*{email}" name="email"><br><br>
+                                <p class="text-danger " th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></p>
+                                <label for="telephone">Téléphone :</label><br>
+                                <input type="tel" id="telephone" th:field="*{telephone}" name="telephone"><br><br>
+                                <p class="text-danger " th:if="${#fields.hasErrors('situationFamiliale')}" th:errors="*{situationFamiliale}"></p>
+                                <label for="situation_familiale">Situation familiale :</label><br>
+                                <input type="text" id="situation_familiale" th:field="*{situationFamiliale}" name="situationFamiliale"><br><br>
+                                  <p class="text-danger " th:if="${#fields.hasErrors('adresse')}" th:errors="*{adresse}"></p>
+                                <label for="adresse">Adresse :</label><br>
+                                <textarea id="adresse" th:field="*{adresse}" name="adresse" rows="4" cols="30"></textarea><br><br>
+                            </div>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Ajouter">
+                        <input class="btn btn-secondary" type="button" value="Annuler">
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div th:replace="./footer.html"></div>
+    <script>
+        // Sélectionnez l'élément avec l'ID "ajo"
+        var ele = document.getElementById("ajo");
+
+        // Modifiez le style de fond en utilisant la propriété "style" et "backgroundColor"
+        ele.style.backgroundColor = "#50FF63";
+        ajouterEnseignant()
+        {
+        	alter("bien enregestre");}
+        function annuler() {
+            // Sélectionnez tous les champs du formulaire
+            var champsFormulaire = document.querySelectorAll('input[type=text], input[type=radio], input[type=date], input[type=email], input[type=tel], textarea, select');
+
+            // Parcourez tous les champs et réinitialisez leur valeur à vide
+            champsFormulaire.forEach(function(champ) {
+                champ.value = '';
+            });
+
+            // Sélectionnez tous les éléments <p> dans le formulaire
+            var paragraphes = document.getElementsByTagName("p");
+            
+            // Parcourez tous les paragraphes et réinitialisez leur contenu à vide
+            for (var i = 0; i < paragraphes.length; i++) {
+                paragraphes[i].textContent = '';
+            }
+        }
+
+    </script>
+</body>
+</html>

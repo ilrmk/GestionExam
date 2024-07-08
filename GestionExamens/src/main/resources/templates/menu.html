@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ensah</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/style.css">
+    
+</head>
+
+<body>
+    <div class="wrapper">
+        <aside id="sidebar" class="js-sidebar">
+            <!-- Content For Sidebar -->
+            <div class="h-100">
+             <li class="navbar-logo flexbox-col-start-center">
+      <a class="navbar-item-inner flexbox ">
+       <img   class=" rounded-circle" src="../image/ensah.png" alt="ENS logo">
+      </a>
+      
+    </li>
+                
+                <hr class="sidebar-divider my-0">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header flexbox-col-start-center" >
+                   Espace de gestion
+                    </li>
+                                    <hr class="sidebar-divider my-0">
+                    
+                    <li class="sidebar-item">
+                        <a href="/homeView" class="sidebar-link collapsed" data-bs-target="#" ><i class="fa fa-home" aria-hidden="true"></i>
+                             Accueil
+                        </a>
+                        </li>
+                    <li class="sidebar-item">
+                        <a href="/homeView" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa fa-users" aria-hidden="true"></i>
+
+                             Gestion du personnel
+                        </a>
+                        <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item t">
+                                <a href="/GestionEnsView" class="sidebar-link">Gestion des enseignants</a>
+                            </li>
+                            <li class="sidebar-item t">
+                                <a href="/GestionAdminView" class="sidebar-link">Gestion des admins</a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/homeView" class="sidebar-link collapsed" data-bs-target="#pages" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
+                            Gestion des éléments pédagogiques 
+                        </a>
+                        <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item t">
+                                <a href="/module/addModuleForm" class="sidebar-link">Ajouter Module </a>
+                            </li>
+                            <li class="sidebar-item t">
+                                <a href="/module/consulterModule" class="sidebar-link">Consulter les modules</a>
+                            </li>
+                        </ul>
+                    </li>
+                     <li class="sidebar-item ">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#multi" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-share-nodes pe-2"></i>
+                      Planification des examens                        </a>
+                        <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item t">
+                                <a href="/formExamen" class="sidebar-link collapsed" data-bs-target="#level-1"
+                                    >Créer Examen</a>
+                             </li>
+                             <!--     <ul id="level-1" class="sidebar-dropdown list-unstyled collapse">
+                                    <li class="sidebar-item t">
+                                        <a href="#" class="sidebar-link">Level 1.1</a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="#" class="sidebar-link">Level 1.2</a>
+                                    </li>
+                                </ul>
+                                
+                                -->
+                                
+                             <li class="sidebar-item t">
+                                <a href="/GererExamen" class="sidebar-link collapsed" data-bs-target="#level-1"
+                                    >Gerer les Examens planifie </a>
+                             </li>
+                             
+                             <li class="sidebar-item t">
+                                <a href="/ConfirmerExam" class="sidebar-link collapsed" data-bs-target="#level-1">
+                                Confirmer les Examens tenues</a>
+                             </li>
+                             
+                             <li class="sidebar-item t">
+                                <a href="/ConsulterExamen" class="sidebar-link collapsed" data-bs-target="#level-1">
+                                Consulter </a>
+                             </li>
+                        </ul>
+                    </li>
+                    
+                    
+                   
+                    <hr class="sidebar-divider my-0">
+                   
+                    <li class="sidebar-header flexbox-col-start-center">
+                   <i class="fa fa-sign-out" aria-hidden="true"></i> 
+                   <a href="/logout" class="sidebar-link collapsed" data-bs-target="#level-1"
+                                    >Déconnexion</a>
+                   
+                    </li>
+                   
+                </ul>
+            </div>
+        </aside>
+        
+        
+        <div class="main">
+            <nav class="navbar navbar-expand  topbar mb-4 static-top ">
+
+                        <!-- Sidebar Toggle (Topbar) -->
+                        
+
+                        
+                        <!-- Topbar Search -->
+                        <form method="POST" action="" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                            <div class="input-group">
+                                <input type="text"  style="  color:#1B4C6E;  background: #FFFFFF;"class="form-control  border-0 small" placeholder="Rcherche par mot clé" aria-label="Rechercher" aria-describedby="basic-addon2" name="keyword"> 
+                                <div class="input-group-append">
+                                    <button  style="    background: #FFFFFF;" class="btn  " type="submit">
+                                   <i class=" fa-solid fa fa-search" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                       
+                                                            
+                            <ul class="navbar-nav ml-auto">
+
+                            <!--Nav Item - User Information -->
+                            <li class="nav-item  no-arrow flexbox-right">
+                      <i class="fa fa-user" aria-hidden="true"></i>
+                      
+                                  
+                                
+                                
+                            </li>
+
+                        </ul>
+
+                           
+                        
+                      
+                    </nav>
+       
+  
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ENSAH</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div th:replace="./menu.html"></div>
+
+    <!-- Main -->
+    <div class="main">
+        <main class="content px-3 py-2">
+            <h3 class="h2 mb-2 text-center">Liste des Modules</h3>
+            <div class="row">
+                <form method="POST" th:action="@{/module/chercher}" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" style="color:#1B4C6E; background: #FFFFFF;" class="form-control border small" placeholder="Recherche par mot clé" aria-label="Rechercher" aria-describedby="basic-addon2" name="nom" /> 
+                        <div class="input-group-append">
+                            <button style="background: #FFFFFF;" class="btn" type="submit">
+                                <i class="fa-solid fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body p-2 m-2">
+              <table class="table">
+    <thead style="background:#4168FF;">
+        <tr>
+            <th class="text-white" scope="col">ID</th>
+            <th class="text-white" scope="col">Titre</th>
+            <th class="text-white" scope="col">Type</th>
+            <th class="text-white" scope="col">Niveau</th>
+            <th class="text-white" scope="col">Coordonnateur</th>
+           <th class="text-white" scope="col">Enseignant</th>
+            <th class="text-white" scope="col">Volume Horaire</th>
+            <th class="text-white" scope="col">Heures Cours</th>
+            <th class="text-white" scope="col">Heures TD</th>
+            <th class="text-white" scope="col">Heures TP</th>
+            <th class="text-white" scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="module : ${listeModules}">
+            <td th:text="${module.id}"></td>
+            <td th:text="${module.titre}"></td>
+            <td th:text="${module.type}"></td>
+            <td th:text="${module.niveau.titre}"></td>
+             <td th:text="${module.coordonnateur.nom + ' ' + module.coordonnateur.prenom}"></td>
+        <td th:text="${module.enseignant.nom + ' ' + module.enseignant.prenom}"></td>            
+            
+            <td th:text="${module.volumeHoraire}"></td>
+            <td th:text="${module.nombreHeuresCours}"></td>
+            <td th:text="${module.nombreHeuresTD}"></td>
+            <td th:text="${module.nombreHeuresTp}"></td>
+            <td>
+                <a class="btn btn-warning btn-sm text-white d-flex align-items-center" th:href="@{'/module/modifier/' + ${module.id}}">
+                    <span>Modifier</span>
+                    <i class="fas fa-edit ml-1"></i>
+                </a>
+                <a class="btn btn-danger btn-sm text-white d-flex align-items-center mt-1" th:href="@{'/module/supprimer/' + ${module.id}}">
+                    <span>Supprimer</span>
+                    <i class="fa fa-remove ml-1"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+            </div>
+        </main>
+    </div>
+
+    <div th:replace="./footer.html"></div>
+  
+</body>
+</html>

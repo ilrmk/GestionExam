@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulter Examen</title>
+    <link rel="stylesheet" href="/style.css">
+ 
+</head>
+<body>
+    <div th:replace="menu.html"></div>
+
+    <!-- Main -->
+    <div class="main">
+        <main class="content px-3 py-2">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div
+                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">
+                  Recherche d'un examen
+                </h6>
+                <div class="dropdown no-arrow">
+
+
+
+                </div>
+            </div>
+            <div class="card-body">
+	<form  method="GET"  th:action="@{/chercherExam}" >
+		<p class="text-primary">Remplir un ou plusieurs critères de recherche</p>
+
+		<div class="form-group">
+			<label>Id d'examen</label> <input
+				class="form-control" type="text" name="id" size="40"  />
+		</div>
+
+
+		<div class="form-group">
+		
+		<div class="form-group"><label>Niveau <span style="color:red">(*)</span></label>
+		 <select id="niveau" name="niveau" class="form-control" >
+				 <option value=""></option>
+				<option th:each="niveau : ${ListNiveau}" th:value="${niveau.id}" th:text="${niveau.titre}"></option>
+		</select>
+		</div>
+		</div>
+		<div class="form-group">
+		
+		<div class="form-group"><label>Semestre<span style="color:red">(*)</span></label> 
+		<select id="semestre" class="form-control" name="semestre" >
+		<option value=""></option>
+		<option value="Printemps">Printemps</option>
+		<option value="Automn">Automn</option>
+		</select>
+		</div>
+		</div>
+		
+		
+		
+		<div class="form-group">
+		    <label>Année Universitaire<span style="color:red">(*)</span></label>
+		    <select class="form-control" name="annee" id="annee" >
+		        <option value=""></option>
+		        <option th:each="entry : ${anneeUniMap}" 
+		                th:value="${entry.key}" 
+		                th:text="${entry.value}"></option>
+		    </select>
+		</div>
+
+
+		<div style="margin: 20px">
+			<button type="submit" class="btn btn-primary ">Rechercher</button>
+			<button type="reset" class="btn btn-secondary ">Annuler</button>
+
+		</div>
+
+	</form>
+                
+            </div>
+   </div>
+    <div th:if="${examens != null}">
+        <h3>Résultats de recherche</h3>
+        <h6 style="color:green;">Nombre d'éléments trouvés : <span th:text="${#lists.size(examens)}"></span></h6>
+
+        <div th:if="${examens.isEmpty()}">
+            <p>Aucun examen trouvé pour les critères de recherche spécifiés.</p>
+        </div>
+
+        <div th:unless="${examens.isEmpty()}">
+        <div class="card-body p-2 m-2">
+            <table class="table">
+                <thead style="background:#4168FF;">
+                    <tr>
+                        <th class="text-center text-white" scope="col">Id</th>
+                        <th class="text-center text-white" scope="col">Session</th>
+                        <th class="text-center text-white" scope="col">Type</th>
+                        <th class="text-center text-white" scope="col">Module</th>
+                        <th class="text-center text-white" scope="col">Coordonnateur</th>
+                        <th class="text-center text-white" scope="col">Date</th>
+                        <th class="text-center text-white" scope="col">Durée prévue</th>
+                        <th class="text-center text-white" scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="examen : ${examens}">
+                        <td th:text="${examen.id}"></td>
+                        <td th:text="${examen.session}"></td>
+                        <td th:text="${examen.type}"></td>
+                        <td th:text="${examen.module.titre}"></td>
+                        <td th:text="${examen.module.coordonnateur.nom}"></td>
+                        <td th:text="${examen.date}"></td>
+                        <td th:text="${examen.dureePrevue}"></td>
+                        <td>
+                          <a th:href="@{/ConsulterDetaille/{examId}(examId=${examen.id_examen})}" class="">Details <i class="fas fa-edit"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+   </div>
+     </main>
+    </div>
+    <div th:replace="footer.html"></div>
+</body>
+</html>

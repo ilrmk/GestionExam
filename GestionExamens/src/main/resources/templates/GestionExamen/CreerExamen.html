@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer Examen</title>
+    <link rel="stylesheet" href="../ControleExamenCss/Examen.css">
+ 
+ <script  th:inline="javascript" >
+        document.addEventListener("DOMContentLoaded", function() {
+            const formSteps = document.querySelectorAll(".content");
+            let currentStep = 0;
+
+            function showStep(stepIndex) {
+                formSteps.forEach((step, index) => {
+                    if (index === stepIndex) {
+                        step.style.display = "block";
+                    } else {
+                        step.style.display = "none";
+                    }
+                });
+            }
+
+            function nextStep() {
+                if (currentStep < formSteps.length - 1) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+
+            function prevStep() {
+                if (currentStep > 0) {
+                    currentStep--;
+                    showStep(currentStep);
+                }
+            }
+
+         // Sélectionnez tous les boutons de classe .next
+            var nextButtons = document.querySelectorAll(".next");
+
+         	var preButtons=document.querySelectorAll(".prev");
+            // Parcourez chaque bouton et ajoutez l'événement onclick
+            nextButtons.forEach(function(button) {
+                button.addEventListener("click", nextStep);
+            });
+            
+            preButtons.forEach(function(button) {
+                button.addEventListener("click", prevStep);
+            });
+
+            
+           
+            
+
+            showStep(currentStep);
+        });
+        
+        
+        function toggleSurveillantsInput(checkbox) {
+            var surveillantsInput = document.getElementById('surveillants_'+checkbox.value);
+            if (surveillantsInput) {
+                surveillantsInput.style.display = checkbox.checked ? "block" : "none";
+                
+                // Mettre à jour la liste NbsurveillantsParSalle
+                var inputName = "NbsurveillantsParSalle[" + checkbox.value + "]";
+                var inputNumber = document.getElementsByName(inputName)[0];
+                if (inputNumber) {
+                    inputNumber.value = checkbox.checked ? "2" : ""; // Mettez ici la valeur par défaut
+                }
+            }
+        }
+
+        
+        
+  <!--      
+   // Récupérer la liste des modules depuis l'élément HTML
+        var modulesElement = document.getElementById('modules');
+
+        // Extraire les données des modules depuis l'attribut HTML
+        var modulesData = JSON.parse(modulesElement.dataset.modulesTh);
+
+        // Convertir les données des modules en un tableau JavaScript
+        var modules = Object.values(modulesData);
+
+        // Fonction pour mettre à jour la liste des modules en fonction du niveau sélectionné
+	function updateModules() {
+    var niveauSelectionne = document.getElementById("niveau").value;
+    var moduleSelect = document.getElementById("module");
+
+    // Effacer les options existantes
+    moduleSelect.innerHTML = "";
+
+    // Ajouter l'option "Choisissez"
+    var chooseOption = document.createElement("option");
+    chooseOption.value = "0";
+    chooseOption.text = "Choisissez";
+    moduleSelect.appendChild(chooseOption);
+
+    // Ajouter les options filtrées à la liste des modules
+    for (let i = 0; i < modules.length; i++) {
+        if (niveauSelectionne === modules[i].niveau.id || niveauSelectionne === '0') {
+            var option = document.createElement("option");
+            option.value = modules[i].id;
+            option.text = modules[i].nom;
+            moduleSelect.appendChild(option);
+        }
+    }
+}
+-->
+
+
+function updateCoordinator() {
+    var moduleId = document.getElementById("module").value;
+    var coordinnateurInput = document.getElementById("coordinnateur");
+   
+   
+   
+  // coordinnateurInput.innerHTML = "";
+    
+    // Vérifiez si un module est sélectionné
+    if (moduleId) {
+        // Trouvez l'option correspondante dans la liste des coordinateurs
+        var coordinnateurOption = coordinnateurInput.querySelector('option[value="' + moduleId + '"]');
+        
+        // Si l'option est trouvée, la sélectionner
+        if (coordinnateurOption) {
+            coordinnateurOption.selected = true;
+        }
+    } else {
+        // Si aucun module n'est sélectionné, sélectionnez l'option "Choisissez"
+        coordinnateurInput.value = '0';
+    }
+}
+
+      
+      
+      
+      
+   
+</script>
+ 
+</head>
+<body>
+<div th:replace="./menu.html"> </div>
+
+<!-- Main -->
+    
+<div class="main">
+<div class="">
+    <form  th:action="@{/formExamen}" method="POST" th:object="${examenMdl}" >
+        <div id="identity" class="content">
+            <fieldset class="liste">
+                <legend class="h2 mb-2 text-center"> Informations générales sur l'examen</legend>
+                <div th:if="${messageErreur}" class="alert alert-danger" role="alert">
+				    <!-- Afficher le message d'erreur -->
+				    <p th:text="${messageErreur}"></p>
+				</div>
+                <div class="form-group mt-2 mb-0 row justify-content-center">
+                    <div class="col-md-6 col-sm-8 mb-2">
+                        <label for="level">Niveau <abbr>*</abbr></label>
+                        <select id="niveau" name="niveauId" class="form-control" data-parsley-group="studiesGrp"  >
+						    <option value="">
+						    <!-- Utilisation de Thymeleaf pour parcourir la liste des niveaux -->
+						    <option th:each="niveau : ${ListNiveau}" th:value="${niveau.id}" th:text="${niveau.titre}"></option>
+						</select>
+						<p style="color:red;" th:if="${#fields.hasErrors('niveauId')}" th:errorclass="error" th:errors="*{niveauId}" />
+						
+                    </div>
+                    
+                     <div class="col-md-6 col-sm-8 mb-2">
+                        <label for="module">Eléments pédagogiques<abbr>*</abbr></label>
+                        <!-- Utiliser Thymeleaf pour générer la liste des modules dans un élément HTML -->
+                        <select id="module" name="moduleId" class="form-control" data-parsley-group="studiesGrp" onchange="updateCoordinator()">
+                        	<option value="">
+						    <!-- Utilisation de Thymeleaf pour parcourir la liste des niveaux -->
+						    
+						    <option th:each="module : ${ListModule}" th:value="${module.id}" th:text="${module.niveau.titre}+'--'+${module.titre}"></option> 
+						</select>
+						<p style="color:red;" th:if="${#fields.hasErrors('moduleId')}" th:errorclass="error" th:errors="*{moduleId}" />
+                    </div>
+                    
+                    
+                    <div class="col-md-6 col-sm-8 mb-2">
+                        <label for="level">Session</label>
+                        <select id="session" name="session" class="form-control" data-parsley-group="studiesGrp">
+						    <option value="normale" selected>Normale</option>
+						    <option value="Ratrappage" >Ratrappage</option>
+						    
+						</select>
+                    </div>
+                    
+                      <div class="col-md-6 col-sm-8 mb-2">
+                        <label for="semestre">Semestre</label>
+                        <select id="semestre" name="semestre" class="form-control" data-parsley-group="studiesGrp" >
+                        	 <option th:value="Automne" th:selected="${defaultSemestre == 'Automne'}">Automne</option>
+						    <option th:value="Printemps" th:selected="${defaultSemestre == 'Printemps'}">Printemps</option>
+						   
+						</select>
+                    </div>
+               
+                    <div class="col-md-6 col-sm-8 mb-2">
+                        <label for="type">Type</label>
+                        <select id="type" name="type" class="form-control" data-parsley-group="studiesGrp" >
+                        	 <option th:selected="${defaulttype == 'DS1'}" value="DS1">Devoir surveillé 1</option>
+								<option th:selected="${defaulttype== 'DS2'}" value="DS2">Devoir surveillé 2</option>
+								<option th:selected="${defaulttype == 'Examen final'}" value="Examen final">Examen final</option>
+						</select>
+                    </div>
+                    
+                    <div class="col-md-6 col-sm-8 mb-2">
+					    <label for="coordinnateur">Coordinnateur :</label>
+					    <select id="coordinnateur" name="coordinnateur" class="form-control" data-parsley-group="studiesGrp" onchange="updateCoordinator()">
+                        	<option value="">Choisissez</option>
+						    <option th:each="ens : ${ListEnseignant}" th:value="${ens.id}" th:text="${ens.nom}+${ens.prenom}"></option> 
+						</select>
+					    
+					</div>              				
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="next btn btn-primary">Suivant</button>
+                </div>
+            </fieldset>
+        </div>
+        
+        
+         <div id="time" class="content" style="display:none;">
+            <fieldset class="liste">
+                <legend class="h2 mb-2 text-center">Le cadre temporelle</legend>
+                
+                <div class="col-md-4 col-sm-8 mb-2">
+					    <label for="dateDebut">Date de début<abbr>*</abbr></label>
+					    <input type="date" id="dateDebut" name="date" class="form-control" >
+					</div>
+					<p style="color:red;" th:if="${#fields.hasErrors('date')}" th:errorclass="error" th:errors="*{date}" />
+					
+					<div class="col-md-4 col-sm-8 mb-2">
+					    <label for="heureDebut">Heure de début<abbr>*</abbr></label>
+					    <input type="time" id="heureDebut" name="heureDebut" class="form-control" >
+					</div>
+					 <p style="color:red;" th:if="${#fields.hasErrors('heureDebut')}" th:errorclass="error" th:errors="*{heureDebut}" />                   
+                    
+                   <div class="col-md-4 col-sm-8 mb-2">
+					    <label for="duree">Durée d'examen (en heures)</label><br>
+                        <input type="text" id="duree" name="dureePrevue" pattern="^(\d+h)?(\d{1,2}min)?$" class="form-control" placeholder="1h ou 1h30min" >
+                        <small class="form-text text-muted">Utilisez le format "1h" ou "1h30min" .</small>
+                    
+					</div>
+					
+					<div class="col-md-4 col-sm-8 mb-2">
+					    <label for="annee_universitaire">Année universitaire :</label>
+					    <input type="text" id="annee_universitaire" name="anneeUniversitaire" class="form-control" >
+					</div>
+                	<p style="color:red;" th:if="${#fields.hasErrors('anneeUniversitaire')}" th:errorclass="error" th:errors="*{anneeUniversitaire}" />
+                <div class="d-flex justify-content-center">
+                 <button type="button" class="prev btn btn-secondary">Retour</button>
+                    <button type="button" class="next btn btn-primary">Suivant</button>
+                </div>
+                </fieldset>
+                </div>
+                
+
+        <div id="studies" class="content" style="display:none;">
+             <fieldset class="liste">
+                <legend class="h2 mb-2 text-center">lieu d'examen</legend>
+                				
+				
+                 <div class="justify-content-center">
+                  <div class="col-md-8 col-sm-8 mb-2">
+				    <label>Salle d'examen :</label><br>
+				    	
+				    	<div class="case">
+				        <!-- Utilisation de Thymeleaf pour parcourir la liste des salles -->
+				         <div th:each="salle : ${ListSalle}">
+							    <input type="checkbox" th:id="${salle.id}" name="selectedSalleIds" th:value="${salle.id}" onclick = "toggleSurveillantsInput(this)">
+							    <label th:for="${salle.id}" th:text="${salle.nom + ' (Capacité: ' + salle.capacite + ')'}"></label><br>
+							    <input type="number" th:id="'surveillants_' + ${salle.id}" name="NbsurveillantsParSalle" value="2" min="1" max="5" style="display: none;">
+							</div>
+							</div>
+				    </div>
+				   <p style="color:red;" th:if="${#fields.hasErrors('selectedSalleIds')}" th:errorclass="error" th:errors="*{selectedSalleIds}" />  
+
+					<div class="col-md-8 col-sm-8 mb-2">
+					    <label>Les surveillances :</label><br>
+					    <div class="case2">
+					      <input type="radio" id="1" name="selectedOption" th:value="1">Choisir aléatoirement
+						  <br><input type="radio" id="2" name="selectedOption" th:value="2">Choisir aléatoirement mais ils doivent appartenir au même groupe
+						</div>
+						<p style="color:red;" th:if="${#fields.hasErrors('selectedOption')}" th:errorclass="error" th:errors="*{selectedOption}" />  
+						
+					</div>
+				
+                </div>
+                
+                
+              
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="prev btn btn-secondary">Retour</button>
+                    <button type="submit" class="next btn btn-primary ">Confirme</button>
+                   
+                </div>
+            
+               
+            </fieldset>
+        </div>
+
+        <!-- Add more steps here as needed -->
+
+    </form>
+</div>
+</div>
+<div th:replace="./footer.html"> </div>
+
+
+
+
+</body>
+</html>
+

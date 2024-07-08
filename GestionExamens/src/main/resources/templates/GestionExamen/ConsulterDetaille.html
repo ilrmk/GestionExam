@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulter Examen</title>
+    <link rel="stylesheet" href="/style.css">
+      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    
+</head>
+<body>
+    <div th:replace="menu.html"></div>
+
+    <!-- Main -->
+   <!-- Main -->
+<div class="main">
+    <main class="content px-3 py-2">
+    
+        <h2 class="exam-title">Les informations de l'examen N°<span style="color:blue"  class="exam-id" th:text="${examen.id_examen}"></span></h2>
+        
+        <div class="exam-details">
+            <p><strong>Semestre:</strong> <span th:text="${examen.semestre}"></span></p>
+            <p><strong>Session:</strong> <span th:text="${examen.session}"></span></p>
+            <p><strong>Type:</strong> <span th:text="${examen.type}"></span></p>
+            <p><strong>Date:</strong> <span th:text="${examen.date}"></span></p>
+            <p><strong>Heure de début:</strong> <span th:text="${examen.heureDebut}"></span></p>
+            <p><strong>Durée prévue:</strong> <span th:text="${examen.dureePrevue}"></span></p>
+            <p th:if="${examen.dureeReelle != null}"><strong>Durée réelle:</strong> <span th:text="${examen.dureeReelle}"></span></p>
+            <p><strong>Année universitaire:</strong> <span th:text="${anneeUniversitaire}"></span>/<span th:text="${anneeSuivante}"></span></p>
+            <p><strong>Module:</strong> <span th:text="${examen.module.titre}"></span></p>
+            <p><strong>Coordonnateur:</strong> <span th:text="${examen.survs[0].coordonnateur?.nom} + ' ' + ${examen.survs[0].coordonnateur?.prenom}"></span></p>
+        </div>
+        
+        <div class="exam-rooms">
+            <p class="section-title">Les salles:</p>
+            <table class="table">
+                <thead style="background:#4168FF;">
+                    <tr>
+                        <th class="text-center text-white" scope="col">Salle</th>
+                        <th class="text-center text-white" scope="col">Surveillants</th>
+                        <th class="text-center text-white" scope="col">Le contrôleur d'absence</th>
+                    </tr>
+                </thead>
+                <tbody th:each="surveillance : ${examen.survs}">
+                    <tr>
+                        <td class="text-center" th:text="${surveillance.salle.nom}"></td>
+                        <td class="text-center">
+                            <ul>
+                                <li style="list-style-type: disc;" th:each="enseignant : ${surveillance.enseignants_surveillance}" th:text="${enseignant?.nom} + ' ' + ${enseignant?.prenom}"></li>
+                            </ul>
+                        </td>
+                        <td class="text-center" th:text="${surveillance.admin?.nom} + ' ' + ${surveillance.admin?.prenom}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+        <div class="exam-reports">
+            <p><strong>Rapport textuel:</strong>
+                <span th:if="${examen.rapportTextuel != null}" th:text="${examen.rapportTextuel}"></span>
+                <span th:unless="${examen.rapportTextuel != null}">Non confirmée</span>
+            </p>
+            
+            <p><strong>Epreuve:</strong> 
+                <a style="color:blue" th:if="${examen.epreuve != null}" th:href="@{/downloadFile/{fileName}(fileName=${examen.epreuve})}" onclick="downloadFile('${examen.epreuve}')">
+                    Télécharger <i class="bi bi-download"></i>
+                </a>
+                <span th:unless="${examen.epreuve != null}">Non confirmée</span>
+            </p>
+            
+            <p><strong>Pv:</strong> 
+                <a style="color:blue" th:if="${examen.pv != null}" th:href="@{/downloadFile/{fileName}(fileName=${examen.pv})}" onclick="downloadFile('${examen.epreuve}')">
+                    Télécharger <i class="bi bi-download"></i>
+                </a>
+                <span th:unless="${examen.pv != null}">Non confirmée</span>
+            </p>
+        </div>
+    
+        <div th:if="${examen.semestre == null || examen.session == null || examen.type == null || examen.date == null || examen.heureDebut == null || examen.dureePrevue == null || examen.module == null || examen.survs[0].coordonnateur == null || examen.rapportTextuel == null}" class="alert alert-danger" role="alert">
+            Non confirmée
+        </div>
+        
+    </main>
+</div>
+
+
+    <div th:replace="footer.html"></div>
+    <script th:inline="javascript">
+    function downloadFile(filePath) {
+        window.location.href = '/downloadFile/' + filePath;
+    }
+</script>
+</body>
+</html>

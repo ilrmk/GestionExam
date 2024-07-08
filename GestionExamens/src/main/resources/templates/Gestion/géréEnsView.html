@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ENSAH</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div th:replace="menu.html"></div>
+
+    <!-- Main -->
+    <div class="main">
+        <main class="content px-3 py-2">
+            <div th:replace="Gestion/navGestion.html"></div>
+            <h3 class="h2 mb-2 text-center">Liste des Enseignant</h3>
+            <div class="row">
+                <form method="POST" th:action="@{/chercherPourGére}" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" style="color:#1B4C6E; background: #FFFFFF;" class="form-control border small" placeholder="Recherche par mot clé" aria-label="Rechercher" aria-describedby="basic-addon2" name="matricule" /> 
+                        <input type="hidden" value="prof" name="type" /> 
+                        <div class="input-group-append">
+                            <button style="background: #FFFFFF;" class="btn" type="submit">
+                                <i class="fa-solid fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body p-2 m-2">
+                <table class="table">
+                    <thead style="background:#4168FF;">
+                        <tr>
+                            <th class="text-white" scope="col">PPR</th>
+                            <th class="text-white" scope="col">Nom</th>
+                            <th class="text-white" scope="col">Prénom</th>
+                            <th class="text-white" scope="col">Grade</th>
+                            <th class="text-white" scope="col">Département</th>
+                            <th class="text-white" scope="col">Filière</th>
+                            <th class="text-white" scope="col">Spécialité</th>
+                            <th class="text-white" scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="enseignant : ${listeEnseignant}">
+                            <td th:text="${enseignant.PPR}"></td>
+                            <td th:text="${enseignant.nom}"></td>
+                            <td th:text="${enseignant.prenom}"></td>
+                            <td th:text="${enseignant.grade}"></td>
+                            <td th:text="${enseignant.departement.name}"></td>
+                            <td th:text="${enseignant.filiere.name}"></td>
+                            <td th:text="${enseignant.specialite}"></td>
+                            <td>
+                                <a class="btn btn-warning btn-sm text-white d-flex align-items-center" th:href="@{'/modifier/' + ${enseignant.typePerson} + '/' + ${enseignant.id}}">
+                                    <span>Modifier</span>
+                                    <i class="fas fa-edit ml-1"></i>
+                                </a>
+                                <a class="btn btn-danger btn-sm text-white d-flex align-items-center mt-1" th:href="@{'/supprimer/' + ${enseignant.typePerson} + '/' + ${enseignant.id}}">
+                                    <span>Supprimer</span>
+                                    <i class="fa fa-remove ml-1"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div th:replace="footer.html"></div>
+    <script>
+        // Sélectionnez l'élément avec l'ID "géré"
+        var ele = document.getElementById("géré");
+
+        // Modifiez le style de fond en utilisant la propriété "style" et "backgroundColor"
+        ele.style.backgroundColor = "#50FF63";
+    </script>
+</body>
+</html>

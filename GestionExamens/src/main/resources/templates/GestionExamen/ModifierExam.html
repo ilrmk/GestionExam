@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Modifier Examen</title>
+<link rel="stylesheet" href="../ControleExamenCss/Examen.css">
+</head>
+
+<script>
+function toggleSurveillantsInput(checkbox) {
+    var surveillantsInput = document.getElementById('surveillants_'+checkbox.value);
+    if (surveillantsInput) {
+        surveillantsInput.style.display = checkbox.checked ? "block" : "none";
+        
+        // Mettre à jour la liste NbsurveillantsParSalle
+        var inputName = "NbsurveillantsParSalle[" + checkbox.value + "]";
+        var inputNumber = document.getElementsByName(inputName)[0];
+        if (inputNumber) {
+            inputNumber.value = checkbox.checked ? "2" : ""; // Mettez ici la valeur par défaut
+        }
+    }
+}
+
+
+function toggleSalles() {
+    var salleSection = document.getElementById("salleSection");
+    if (salleSection.style.display === "none" || salleSection.style.display === "") {
+        salleSection.style.display = "block";
+    } else {
+        salleSection.style.display = "none";
+    }
+}
+
+</script>
+<body>
+
+<div th:replace="./menu.html"> </div>
+
+<!-- Main -->
+    
+<div class="main">
+
+
+
+<h2 class="text-center">Modifier Examen N°<span style="color:blue"  class="exam-id" th:text="${ExamenAmodifier.id_examen}"></span> </h2>
+
+
+<div class="" style="padding:5%">
+<form th:action="@{/ModifierExam}" method="POST" th:object="${examenMoMdl}">
+    <input type="hidden" name="id" th:value="${ExamenAmodifier.id_examen}">
+
+    <!-- Niveau -->
+    <label for="niveau">Niveau <abbr>*</abbr></label>
+    <select id="niveau" name="niveauId" class="form-control">
+        <option value="0">Choisissez</option>
+        <option th:each="niveau : ${ListNiveau}" th:value="${niveau.id}" th:text="${niveau.titre}" th:selected="${niveau.id == ExamenAmodifier.module.niveau.id}"></option>
+    </select>
+    <p style="color:red;" th:if="${#fields.hasErrors('niveauId')}" th:errors="*{niveauId}"></p>
+
+    <!-- Session -->
+    <label for="session">Session</label>
+    <select id="session" name="session" class="form-control">
+        <option th:selected="${ExamenAmodifier.session == 'normale'}" value="normale">Normale</option>
+        <option th:selected="${ExamenAmodifier.session == 'Ratrappage'}" value="Ratrappage">Ratrappage</option>
+    </select>
+
+    <!-- Semestre -->
+    <label for="semestre">Semestre</label>
+    <select id="semestre" name="semestre" class="form-control">
+        <option th:selected="${ExamenAmodifier.semestre == 'Automne'}" value="Automne">Automne</option>
+        <option th:selected="${ExamenAmodifier.semestre == 'Printemps'}" value="Printemps">Printemps</option>
+    </select>
+
+    <!-- Module -->
+    <label for="module">Eléments pédagogiques <abbr>*</abbr></label>
+    <select id="module" name="moduleId" class="form-control">
+        <option value="0">Choisissez</option>
+        <option th:each="module : ${ListModule}" th:value="${module.id}" th:text="${module.titre}" th:selected="${ExamenAmodifier.module.id == module.id}"></option>
+    </select>
+    <p style="color:red;" th:if="${#fields.hasErrors('moduleId')}" th:errors="*{moduleId}"></p>
+
+		<!-- Type -->
+		 <label for="type">Type</label>
+                <select id="type" name="type" class="form-control" >
+                    <option th:selected="${ExamenAmodifier.type == 'DS1'}" value="DS1">Devoir surveillé 1</option>
+                    <option th:selected="${ExamenAmodifier.type == 'DS2'}" value="DS2">Devoir surveillé 2</option>
+                    <option th:selected="${ExamenAmodifier.type == 'Examen final'}" value="Examen final">Examen final</option>
+                </select>
+            
+
+     <!-- Coordonnateur -->
+    <label for="coordinnateur">Coordonnateur :</label>
+    <select id="coordinnateur" name="coordinnateur" class="form-control">
+        <option value="0">Choisissez un coordonnateur</option>
+        <option th:each="enseignant : ${ListEnseignant}" 
+                th:value="${enseignant.id}" 
+                th:text="${enseignant.nom + ' ' + enseignant.prenom}" 
+                th:selected="${enseignant.id == ExamenAmodifier.module.coordonnateur.id}">
+        </option>
+    </select>
+    <!-- Date de début -->
+    <label for="dateDebut">Date de début <abbr>*</abbr></label>
+    <input type="date" id="dateDebut" name="date" class="form-control" th:value="${ExamenAmodifier.date}">
+    <p style="color:red;" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></p>
+
+    <!-- Heure de début -->
+    <label for="heureDebut">Heure de début <abbr>*</abbr></label>
+    <input type="time" id="heureDebut" name="heureDebut" class="form-control" th:value="${ExamenAmodifier.heureDebut}">
+    <p style="color:red;" th:if="${#fields.hasErrors('heureDebut')}" th:errors="*{heureDebut}"></p>
+
+    <!-- Durée prévue -->
+    
+     <label>Durée Prévue (format: 2h ou 1h30min)</label>
+     <input type="text" id="duree" name="dureePrevue" pattern="^(\d+h)?(\d{1,2}min)?$" class="form-control" th:value="${ExamenAmodifier.dureePrevue}" placeholder="1h ou 1h30min" >
+   <small class="form-text text-muted">Utilisez le format "1h" ou "1h30min" .</small><br>
+  
+    <!-- Année universitaire -->
+    <label for="annee_universitaire">Année universitaire :</label>
+    <input type="text" id="annee_universitaire" name="anneeUniversitaire" class="form-control" th:value="${ExamenAmodifier.anneeUniversitaire}">
+    <p style="color:red;" th:if="${#fields.hasErrors('anneeUniversitaire')}" th:errors="*{anneeUniversitaire}"></p>
+
+    <!-- Salles -->
+    <fieldset class="liste">
+        <legend class="h3 mb-2 text-center">Lieu d'examen</legend>
+        <div class="form-group mt-2 mb-0 row justify-content-center" style="padding:20px">
+            <div th:if="${messageErreur}" class="alert alert-danger" role="alert">
+                <p th:text="${messageErreur}"></p>
+            </div>
+            <table class="table">
+                <thead style="background:#4168FF;">
+                    <tr>
+                        <th class="text-center text-white" scope="col">Salle</th>
+                        <th class="text-center text-white" scope="col">Surveillants</th>
+                        <th class="text-center text-white" scope="col">Le controleur d'absence</th>
+                        <th class="text-center text-white" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody th:each="examen : ${ExamenAmodifier.survs}">
+                    <tr>
+                        <td class="text-center" th:text="${examen.salle.nom}"></td>
+                        <td class="text-center">
+                            <ul>
+                                <li style="list-style-type: disc;" th:each="enseignant : ${examen.enseignants_surveillance}" th:text="${enseignant?.nom} + ' ' + ${enseignant?.prenom}"></li>
+                            </ul>
+                        </td>
+                        <td class="text-center" th:text="${examen.admin.nom}"></td>
+                        <td>
+                            <a th:href="@{/SupprimerSurveillance/{examId}/{survId}(examId=${ExamenAmodifier.id_examen},survId=${examen.id_surv})}" class="btn btn-danger btn-sm">
+                                Supprimer <i class="fa fa-remove"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button style="width:20%;" type="button" class="btn btn-primary" onclick="toggleSalles()">Ajouter Salle</button>
+            <div id="salleSection" style="display:none;">
+                <div class="col-md-8 col-sm-8 mb-2">
+                    <label>Salle d'examen :</label><br>
+                    <div class="case">
+                        <div th:each="salle : ${ListSalle}">
+                            <input type="checkbox" th:id="${salle.id}" name="selectedSalleIds" th:value="${salle.id}" onclick="toggleSurveillantsInput(this)">
+                            <label th:for="${salle.id}" th:text="${salle.nom + ' (Capacité: ' + salle.capacite + ')'}"></label><br>
+                            <input type="number" th:id="'surveillants_' + ${salle.id}" name="NbsurveillantsParSalle" value="2" min="1" max="5" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+                <label>Les surveillances :</label><br>
+					    <div class="case2">
+					      <input type="radio" id="1" name="selectedOption" th:value="1">Choisir aléatoirement
+						  <br><input type="radio" id="2" name="selectedOption" th:value="2">Choisir aléatoirement mais ils doivent appartenir au même groupe
+						</div>
+						
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary" style="margin-right:10px;">Modifier</button>
+        <a href="/AnnulerMod" class="btn btn-secondary btn-sm">Annuler</a>
+    </div>
+</form>
+
+
+</div>
+
+
+</div>
+<div th:replace="./footer.html"> </div>
+</body>
+</html>
